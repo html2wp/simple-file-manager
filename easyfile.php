@@ -83,6 +83,12 @@ class Easyfile
 
 	    $zip->extractTo( $destination );
 
+	    // If we have a resource fork, get rid of it
+	    $resource_fork = $destination . '/__MACOSX/';
+
+	    if ( file_exists( $resource_fork ) )
+	    	self::delete( $resource_fork );
+
 	    return $zip->close();
     }
 
