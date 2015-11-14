@@ -152,5 +152,21 @@ class Easyfile
 
 	    return true;
 	}
+
+	/**
+	 * Creates a folder recursively.
+	 * @param  		string 	$path The path of the folder to create
+	 * @param  		int 	$mode The mode given for the folder. The default mode (0764) used by the method is less permissive than the php default of (0777).
+	 * @return      bool    Returns true if the folder already existed or if it was created on successfully, false on failure.
+	 */
+	public static function mkdir( $path, $mode = 0764 ) {
+
+		// Folder exists already, return true
+		if ( file_exists( $path ) )
+			return true;
+
+		return mkdir( $path, $mode, true );
+
+	}
 }
 
