@@ -100,9 +100,13 @@ class Simple_File_Manager
 	 * Delete a file, or recursively delete a folder and it's contents
 	 * Based on: http://stackoverflow.com/a/15111679/3073849
 	 * @param $source 			The path of the file or folder
-	 * @return Returns TRUE on success or FALSE on failure.
+	 * @return Returns TRUE on success or if file already deleted or FALSE on failure.
 	 **/
 	public static function delete( $source ) {
+
+		if ( ! file_exists( $source ) ) {
+    		return true;
+		}
 
 		if ( is_dir( $source ) ) {
 
