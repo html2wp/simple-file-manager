@@ -136,10 +136,9 @@ class Simple_File_Manager {
 	 * Based on: http://stackoverflow.com/a/12763962/3073849
 	 * @param       string   $source      Source path
 	 * @param       string   $destination Destination path
-	 * @param       string   $permissions New folder creation permissions
 	 * @return      bool     Returns true on success, false on failure
 	 **/
-	public static function copy( $source, $destination, $permissions = 0755 ) {
+	public static function copy( $source, $destination ) {
 
 		// Check for symlinks
 		if ( is_link( $source ) ) {
@@ -153,7 +152,7 @@ class Simple_File_Manager {
 
 		// Make destination directory
 		if ( ! is_dir( $destination ) ) {
-			self::mkdir( $destination, $permissions );
+			self::mkdir( $destination, fileperms( $source ) );
 		}
 
 		// Loop through the folder
@@ -166,7 +165,7 @@ class Simple_File_Manager {
 			}
 
 			// Deep copy directories
-			self::copy( "$source/$entry", "$destination/$entry", $permissions );
+			self::copy( "$source/$entry", "$destination/$entry" );
 		}
 
 		// Clean up
