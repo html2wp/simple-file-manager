@@ -177,10 +177,10 @@ class Simple_File_Manager {
 	/**
 	 * Creates a folder recursively.
 	 * @param  		string 	$path        The path of the folder to create
-	 * @param  		int 	$permissions The mode given for the folder. The default mode (0764) used by the method is less permissive than the php default of (0777).
+	 * @param  		int 	$permissions The mode given for the folder. The default mode (0764) is less permissive than the php default of (0777).
 	 * @return      bool    Returns true if the folder already existed or if it was created on successfully, false on failure.
 	 */
-	public static function mkdir( $path, $permissions = 0764 ) {
+	public static function mkdir( $path, $permissions = SFM_DEFAULT_PERMISSIONS ) {
 
 		// Folder exists already, return true
 		if ( file_exists( $path ) ) {
@@ -193,4 +193,10 @@ class Simple_File_Manager {
 
 }
 
+// Create an alias
 class_alias( 'Simple_File_Manager', 'sfm' );
+
+// Set default file/folder permission mode if not already defined
+if ( ! defined( 'SFM_DEFAULT_PERMISSIONS' ) ) {
+	define( 'SFM_DEFAULT_PERMISSIONS', 0764 );
+}
