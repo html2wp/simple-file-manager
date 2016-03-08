@@ -1,7 +1,7 @@
 <?php
 
-class Simple_File_Manager 
-{
+class Simple_File_Manager {
+
 	/**
 	* Creates a zip file from a file or a folder recursively without a full nested folder structure inside the zip file
 	* Based on: http://stackoverflow.com/a/1334949/3073849
@@ -191,5 +191,7 @@ class Simple_File_Manager
 		return mkdir( $path, $mode, true );
 
 	}
+
 }
 
+class_alias( 'Simple_File_Manager', 'sfm' );
