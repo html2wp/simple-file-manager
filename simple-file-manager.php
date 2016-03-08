@@ -105,7 +105,7 @@ class Simple_File_Manager {
 	public static function delete( $source ) {
 
 		if ( ! file_exists( $source ) ) {
-    		return true;
+			return true;
 		}
 
 		if ( is_dir( $source ) ) {
