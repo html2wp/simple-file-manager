@@ -69,7 +69,7 @@ class Easyfile
 
     	if ( !is_dir( $destination ) )
 		{
-			if ( !mkdir( $destination ) )
+			if ( !self::mkdir( $destination ) )
 	    		return false;
 		}
 
@@ -77,7 +77,7 @@ class Easyfile
 		{
 			self::delete( $destination );
 
-			if ( !mkdir( $destination ) )
+			if ( !self::mkdir( $destination ) )
 	    		return false;
 		}
 
@@ -133,7 +133,7 @@ class Easyfile
 
 	    // Make destination directory
 	    if ( !is_dir( $destination ) )
-	        mkdir($destination, $permissions);
+	        self::mkdir( $destination, $permissions );
 
 	    // Loop through the folder
 	    $dir = dir( $source );
