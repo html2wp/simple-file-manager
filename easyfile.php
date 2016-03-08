@@ -39,13 +39,12 @@ class Easyfile
 	                $zip->addEmptyDir( str_replace( $source . '/', '', $file . '/') );
 
 	            else if ( is_file( $file ) )
-	                $zip->addFromString( str_replace( $source . '/', '', $file ), file_get_contents( $file ) );
-
+	            	$zip->addFile( $file, str_replace($source . '/', '', $file ));
 	        }
 	    }
 
 	    else if ( is_file( $source ) )
-	        $zip->addFromString( basename( $source ), file_get_contents( $source ) );
+	    	$zip->addFile( $source, basename( $source ) );
 
 	    return $zip->close();
     }
