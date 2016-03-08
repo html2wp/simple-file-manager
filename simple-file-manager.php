@@ -9,106 +9,121 @@ class SimpleFileManager
 	* @param $destination		The path of the zip file you want to create
 	* @return Returns TRUE on success or FALSE on failure.
 	*/
-	public static function zip( $source, $destination )
-    {
-		if ( !extension_loaded( 'zip' ) || !file_exists( $source ) )
-	        return false;
+	public static function zip( $source, $destination ) {
 
-	    $zip = new ZipArchive();
-
-	    if ( !$zip->open( $destination, ZIPARCHIVE::CREATE ) )
-	        return false;
-
-	    $source = str_replace( '\\', '/', realpath( $source ) );
-
-	    if ( is_dir( $source ) )
-	    {
-	        $files = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $source ), RecursiveIteratorIterator::SELF_FIRST );
-
-	        foreach ( $files as $file )
-	        {
-	            $file = str_replace( '\\', '/', $file );
-
-	            // Ignore "." and ".." folders
-	            if( in_array( substr( $file, strrpos( $file, '/' )+1 ), array( '.', '..' ) ) )
-	                continue;
-
-	            $file = realpath( $file );
-
-	            if ( is_dir( $file ) )
-	                $zip->addEmptyDir( str_replace( $source . '/', '', $file . '/') );
-
-	            else if ( is_file( $file ) )
-	            	$zip->addFile( $file, str_replace($source . '/', '', $file ));
-	        }
-	    }
-
-	    else if ( is_file( $source ) )
-	    	$zip->addFile( $source, basename( $source ) );
-
-	    return $zip->close();
-    }
-    
-    /**
-     * Extracts a zip file to given folder. Overwrite deletes an existing destination folder and replaces it with the content of the zip file.
-     * @param $source 			The path of the zip file you want to extract
-     * @param $destination 		The path of the folder you want to extract to
-     * @param $overwrite 		Whether to overwrite an existing destination folder
-     * @return Returns TRUE on success or FALSE on failure.
-     **/
- 	public static function unzip( $source, $destination, $overwrite = false )
-    {
-		if ( !extension_loaded( 'zip' ) || !file_exists( $source ) )
-	        return false;
-
-	    $zip = new ZipArchive();
-
-	    if ( !$zip->open( $source ) )
-	    	return false;
-
-    	if ( !is_dir( $destination ) )
-		{
-			if ( !self::mkdir( $destination ) )
-	    		return false;
+		if ( ! extension_loaded( 'zip' ) || ! file_exists( $source ) ) {
+			return false;
 		}
 
-		else if ( $overwrite )
-		{
+		$zip = new ZipArchive();
+
+		if ( ! $zip->open( $destination, ZIPARCHIVE::CREATE ) ) {
+			return false;
+		}
+
+		$source = str_replace( '\\', '/', realpath( $source ) );
+
+		if ( is_dir( $source ) ) {
+
+			foreach ( new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator( $source, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::SELF_FIRST ) as $file ) {
+
+				$file = str_replace( '\\', '/', $file );
+				$file = realpath( $file );
+
+				if ( is_dir( $file ) ) {
+					$zip->addEmptyDir( str_replace( $source . '/', '', $file . '/' ) );
+				}
+
+				elseif ( is_file( $file ) ) {
+					$zip->addFile( $file, str_replace( $source . '/', '', $file ) );
+				}
+			}
+		}
+
+		elseif ( is_file( $source ) ) {
+			$zip->addFile( $source, basename( $source ) );
+		}
+
+		return $zip->close();
+	}
+	
+	/**
+	 * Extracts a zip file to given folder. Overwrite deletes an existing destination folder and replaces it with the content of the zip file.
+	 * @param $source 			The path of the zip file you want to extract
+	 * @param $destination 		The path of the folder you want to extract to
+	 * @param $overwrite 		Whether to overwrite an existing destination folder
+	 * @return Returns TRUE on success or FALSE on failure.
+	 **/
+	public static function unzip( $source, $destination, $overwrite = false ) {
+
+		if ( ! extension_loaded( 'zip' ) || ! file_exists( $source ) ) {
+			return false;
+		}
+
+		$zip = new ZipArchive();
+
+		if ( ! $zip->open( $source ) ) {
+			return false;
+		}
+
+		if ( ! is_dir( $destination ) ) {
+
+			if ( ! self::mkdir( $destination ) ) {
+				return false;
+			}
+		}
+
+		elseif ( $overwrite ) {
+
 			self::delete( $destination );
 
-			if ( !self::mkdir( $destination ) )
-	    		return false;
+			if ( ! self::mkdir( $destination ) ) {
+				return false;
+			}
 		}
 
-	    $zip->extractTo( $destination );
+		$zip->extractTo( $destination );
 
-	    // If we have a resource fork, get rid of it
-	    $resource_fork = $destination . '/__MACOSX/';
+		// If we have a resource fork, get rid of it
+		$resource_fork = $destination . '/__MACOSX/';
 
-	    if ( file_exists( $resource_fork ) )
-	    	self::delete( $resource_fork );
+		if ( file_exists( $resource_fork ) ) {
+			self::delete( $resource_fork );
+		}
 
-	    return $zip->close();
-    }
+		return $zip->close();
+	}
 
-    /**
-     * Delete a file, or recursively delete a folder and it's contents
-     * Based on: http://stackoverflow.com/a/15111679/3073849
-     * @param $source 			The path of the file or folder
-     * @return Returns TRUE on success or FALSE on failure.
-     **/
- 	public static function delete( $source )
-    {
-    	if ( is_dir( $source ) ) {
+	/**
+	 * Delete a file, or recursively delete a folder and it's contents
+	 * Based on: http://stackoverflow.com/a/15111679/3073849
+	 * @param $source 			The path of the file or folder
+	 * @return Returns TRUE on success or FALSE on failure.
+	 **/
+	public static function delete( $source ) {
 
-	    	foreach ( new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $source, FilesystemIterator::SKIP_DOTS ), RecursiveIteratorIterator::CHILD_FIRST ) as $path )
-	        	$path->isDir() && !$path->isLink() ? rmdir( $path->getPathname() ) : unlink( $path->getPathname() );
+		if ( is_dir( $source ) ) {
+
+			foreach ( new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator( $source, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::CHILD_FIRST ) as $path ) {
+
+				if ( $path->isDir() && ! $path->isLink() ) {
+					rmdir( $path->getPathname() );
+				}
+				else {
+					unlink( $path->getPathname() );
+				}
+			}
 
 			return rmdir( $source );
-    	}
+		}
 
-    	else
-    		return unlink( $source );
+		else {
+			return unlink( $source );
+		}
 
 	}
 
@@ -120,36 +135,40 @@ class SimpleFileManager
 	 * @param       string   $permissions New folder creation permissions
 	 * @return      bool     Returns true on success, false on failure
 	 **/
-	public static function copy( $source, $destination, $permissions = 0755 )
-	{
-	    // Check for symlinks
-	    if ( is_link( $source ) )
-	        return symlink( readlink( $source ), $destination );
+	public static function copy( $source, $destination, $permissions = 0755 ) {
 
-	    // Simple copy for a file
-	    if ( is_file( $source ) )
-	        return copy($source, $destination);
+		// Check for symlinks
+		if ( is_link( $source ) ) {
+			return symlink( readlink( $source ), $destination );
+		}
 
-	    // Make destination directory
-	    if ( !is_dir( $destination ) )
-	        self::mkdir( $destination, $permissions );
+		// Simple copy for a file
+		if ( is_file( $source ) ) {
+			return copy( $source, $destination );
+		}
 
-	    // Loop through the folder
-	    $dir = dir( $source );
-	    while ( false !== $entry = $dir->read() ) {
+		// Make destination directory
+		if ( ! is_dir( $destination ) ) {
+			self::mkdir( $destination, $permissions );
+		}
 
-	        // Skip pointers
-	        if ( $entry == '.' || $entry == '..' )
-	            continue;
+		// Loop through the folder
+		$dir = dir( $source );
+		while ( false !== $entry = $dir->read() ) {
 
-	        // Deep copy directories
-	        self::copy( "$source/$entry", "$destination/$entry", $permissions );
-	    }
+			// Skip pointers
+			if ( '.' === $entry || '..' === $entry ) {
+				continue;
+			}
 
-	    // Clean up
-	    $dir->close();
+			// Deep copy directories
+			self::copy( "$source/$entry", "$destination/$entry", $permissions );
+		}
 
-	    return true;
+		// Clean up
+		$dir->close();
+
+		return true;
 	}
 
 	/**
@@ -161,8 +180,9 @@ class SimpleFileManager
 	public static function mkdir( $path, $mode = 0764 ) {
 
 		// Folder exists already, return true
-		if ( file_exists( $path ) )
+		if ( file_exists( $path ) ) {
 			return true;
+		}
 
 		return mkdir( $path, $mode, true );
 
