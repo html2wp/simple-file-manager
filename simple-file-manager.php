@@ -53,7 +53,7 @@ class sfm {
 	 * Extracts a zip file to given folder. Overwrite deletes an existing destination folder and replaces it with the content of the zip file.
 	 * @param       string   $source      The path of the zip file you want to extract
 	 * @param       string   $destination The path of the folder you want to extract to
-	 * @param       bool     $overwrite   Whether to overwrite an existing destination folder
+	 * @param       bool     $overwrite   (Optional) Whether to overwrite an existing destination folder
 	 * @return      bool     Returns TRUE on success or FALSE on failure.
 	 **/
 	public static function unzip( $source, $destination, $overwrite = false ) {
@@ -136,7 +136,7 @@ class sfm {
 	 * Based on: http://stackoverflow.com/a/12763962/3073849
 	 * @param       string   $source      Source path
 	 * @param       string   $destination Destination path
-	 * @param       array    $excludes    Name of files and folders to exclude from copying
+	 * @param       array    $excludes    (Optional) Name of files and folders to exclude from copying
 	 * @return      bool     Returns true on success, false on failure
 	 **/
 	public static function copy( $source, $destination, $excludes = array() ) {
@@ -183,7 +183,7 @@ class sfm {
 	/**
 	 * Creates a folder recursively.
 	 * @param  		string 	$path        The path of the folder to create
-	 * @param  		int 	$permissions The mode given for the folder. The default mode (0764) is less permissive than the php default of (0777).
+	 * @param  		int 	$permissions (Optional) The mode given for the folder. The default mode (0764) is less permissive than the php default of (0777).
 	 * @return      bool    Returns true if the folder already existed or if it was created on successfully, false on failure.
 	 */
 	public static function mkdir( $path, $permissions = SFM_DEFAULT_PERMISSIONS ) {
