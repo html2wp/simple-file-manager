@@ -1,6 +1,6 @@
 <?php
 
-class Simple_File_Manager {
+class sfm {
 
 	/**
 	* Creates a zip file from a file or a folder recursively without a full nested folder structure inside the zip file
@@ -192,9 +192,6 @@ class Simple_File_Manager {
 	}
 
 }
-
-// Create an alias
-class_alias( 'Simple_File_Manager', 'sfm' );
 
 // Set default file/folder permission mode if not already defined
 if ( ! defined( 'SFM_DEFAULT_PERMISSIONS' ) ) {
