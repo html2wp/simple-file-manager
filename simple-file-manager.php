@@ -136,9 +136,15 @@ class sfm {
 	 * Based on: http://stackoverflow.com/a/12763962/3073849
 	 * @param       string   $source      Source path
 	 * @param       string   $destination Destination path
+	 * @param       array    $excludes    Name of files and folders to exclude from copying
 	 * @return      bool     Returns true on success, false on failure
 	 **/
-	public static function copy( $source, $destination ) {
+	public static function copy( $source, $destination, $excludes = array() ) {
+
+		// Check if in excludes list
+		if ( in_array( basename( $source ), $excludes ) ) {
+			return false;
+		}
 
 		// Check for symlinks
 		if ( is_link( $source ) ) {
@@ -165,7 +171,7 @@ class sfm {
 			}
 
 			// Deep copy directories
-			self::copy( "$source/$entry", "$destination/$entry" );
+			self::copy( "$source/$entry", "$destination/$entry", $excludes );
 		}
 
 		// Clean up
