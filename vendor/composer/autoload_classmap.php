@@ -6,4 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Simple_File_Manager' => $baseDir . '/simple-file-manager.php',
 );
