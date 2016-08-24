@@ -1,16 +1,24 @@
+# Simple File Manager
+
+Simple file management for PHP.
 
 ## Methods
 
 ### zip( $source, $destination )
+
 ```php
 Sfm::zip( $source, $destination )
 ```
 
-* Creates a zip file from a file or a folder recursively without a full nested folder structure inside the zip file
-	* Based on: http://stackoverflow.com/a/1334949/3073849
-	* @param      string   $source      The path of the folder you want to zip
-	* @param      string   $destination The path of the zip file you want to create
-	* @return     bool     Returns TRUE on success or FALSE on failure.
+Creates a zip file from a file or a folder recursively without a full nested folder structure inside the zip file.
+
+#### Parameters
+$source      The path of the folder you want to zip
+
+$destination The path of the zip file you want to create
+
+#### Return Values
+Returns TRUE on success or FALSE on failure.
 
 
 ### unzip( $source, $destination, $overwrite = false )
