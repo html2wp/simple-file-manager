@@ -204,7 +204,7 @@ class Sfm {
 	public static function mkdir( $path, $permissions = SFM_DEFAULT_PERMISSIONS ) {
 
 		// Folder exists already, return true
-		if ( file_exists( $path ) ) {
+		if ( is_dir( $path ) ) {
 			return true;
 		}
 
