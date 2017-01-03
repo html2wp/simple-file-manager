@@ -147,7 +147,6 @@ class Sfm {
 			// Otherwise if the given path is a file, delete the file
 			return unlink( $path );
 		}
-
 	}
 
 	/**
@@ -232,7 +231,6 @@ class Sfm {
 		return mkdir( $path, $permissions, true );
 
 	}
-
 }
 
 // Set default file/folder permission mode if not already defined
