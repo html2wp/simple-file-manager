@@ -11,20 +11,25 @@ class Sfm {
 	*/
 	public static function zip( $source, $destination ) {
 
+		// Check that zip extensions is loaded and the source file/folder exists
 		if ( ! extension_loaded( 'zip' ) || ! file_exists( $source ) ) {
 			return false;
 		}
 
+		// Create the zip
 		$zip = new ZipArchive();
 
 		if ( ! $zip->open( $destination, ZIPARCHIVE::CREATE ) ) {
 			return false;
 		}
 
+		// Clean up the path
 		$source = str_replace( '\\', '/', realpath( $source ) );
 
+		// If the source is a folder, add the files recursively
 		if ( is_dir( $source ) ) {
 
+			// Loop through the source folder
 			foreach ( new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator( $source, FilesystemIterator::SKIP_DOTS ),
 				RecursiveIteratorIterator::SELF_FIRST ) as $path ) {
@@ -33,16 +38,19 @@ class Sfm {
 				$path = realpath( $path );
 
 				if ( is_dir( $path ) ) {
+					// If a folder, add a coresponding placeholder folder to the zip
 					$zip->addEmptyDir( str_replace( "$source/", '', "$path/" ) );
 				} elseif ( is_file( $path ) ) {
+					// If a file, add it to the zip
 					$zip->addFile( $path, str_replace( "$source/", '', $path ) );
 				}
 			}
-
 		} elseif ( is_file( $source ) ) {
+			// Otherwise if the source is a file add it to the zip alone
 			$zip->addFile( $source, basename( $source ) );
 		}
 
+		// Finish up
 		return $zip->close();
 	}
 
@@ -56,31 +64,39 @@ class Sfm {
 	 **/
 	public static function unzip( $source, $destination, $overwrite = false ) {
 
+		// Check that zip extensions is loaded and the source file/folder exists
 		if ( ! extension_loaded( 'zip' ) || ! file_exists( $source ) ) {
 			return false;
 		}
 
+		// Create the zip
 		$zip = new ZipArchive();
 
+		// Check if able to open zip
 		if ( ! $zip->open( $source ) ) {
 			return false;
 		}
 
+		// If the destination folder doesn't exist try to create it
 		if ( ! is_dir( $destination ) ) {
 
+			// Try to create the destination folder
 			if ( ! self::mkdir( $destination ) ) {
 				return false;
 			}
 
 		} elseif ( $overwrite ) {
 
+			// If the destination folder needs to be overwritten, delete it
 			self::rm( $destination );
 
+			// Try to re-create the folder
 			if ( ! self::mkdir( $destination ) ) {
 				return false;
 			}
 		}
 
+		// Exctract the zip to the destination folder
 		$zip->extractTo( $destination );
 
 		// If we have a resource fork, get rid of it
@@ -90,6 +106,7 @@ class Sfm {
 			self::rm( $resource_fork );
 		}
 
+		// Finish up
 		return $zip->close();
 	}
 
@@ -101,26 +118,33 @@ class Sfm {
 	 **/
 	public static function rm( $path ) {
 
+		// If file doesn't exist we've achieved what is needed
 		if ( ! file_exists( $path ) ) {
 			return true;
 		}
 
+		// If the given path is a folder, we'll delete the contents recursively
 		if ( is_dir( $path ) ) {
 
+			// Loop through the folder starting from the childs (rmdir only works on empty folders)
 			foreach ( new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS ),
 				RecursiveIteratorIterator::CHILD_FIRST ) as $child_path ) {
 
 				if ( $child_path->isDir() && ! $child_path->isLink() ) {
+					// Remove a folder, which is now empty
 					rmdir( $child_path->getPathname() );
 				} else {
+					// Remove a file
 					unlink( $child_path->getPathname() );
 				}
 			}
 
+			// Finally remove the given folder
 			return rmdir( $path );
 
 		} else {
+			// Otherwise if the given path is a file, delete the file
 			return unlink( $path );
 		}
 
@@ -178,7 +202,7 @@ class Sfm {
 			self::copy( "$source/$entry", "$destination/$entry", $excludes );
 		}
 
-		// Clean up
+		// Finish up
 		$dir->close();
 
 		return true;
@@ -204,6 +228,7 @@ class Sfm {
 			return true;
 		}
 
+		// Create the folder
 		return mkdir( $path, $permissions, true );
 
 	}
