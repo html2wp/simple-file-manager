@@ -189,6 +189,13 @@ class Sfm {
 	}
 
 	/**
+	 * Alias for self:copy
+	 */
+	public static function cp( $source, $destination, $excludes = array() ) {
+		return self:copy( $source, $destination, $excludes = array() );
+	}
+
+	/**
 	 * Creates a folder recursively.
 	 * @param  string $path        The path of the folder to create
 	 * @param  int    $permissions (Optional) The mode given for the folder. The default mode (0764) is less permissive than the php default of (0777).
