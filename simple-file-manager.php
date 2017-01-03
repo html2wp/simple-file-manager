@@ -198,7 +198,7 @@ class Sfm {
 	/**
 	 * Creates a folder recursively.
 	 * @param  string $path        The path of the folder to create
-	 * @param  int    $permissions (Optional) The mode given for the folder. The default mode (0764) is less permissive than the php default of (0777).
+	 * @param  int    $permissions (Optional) The mode given for the folder. The default mode (0774) is less permissive than the php default of (0777).
 	 * @return bool   Returns TRUE if the folder already existed or if it was created on successfully, FALSE on failure.
 	 */
 	public static function mkdir( $path, $permissions = SFM_DEFAULT_PERMISSIONS ) {
@@ -216,5 +216,5 @@ class Sfm {
 
 // Set default file/folder permission mode if not already defined
 if ( ! defined( 'SFM_DEFAULT_PERMISSIONS' ) ) {
-	define( 'SFM_DEFAULT_PERMISSIONS', 0764 );
+	define( 'SFM_DEFAULT_PERMISSIONS', 0774 );
 }
