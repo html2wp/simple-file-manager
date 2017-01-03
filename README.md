@@ -1,6 +1,6 @@
 # Simple File Manager
 
-Simple file management for PHP. When you're looking for simple syntax to do complex things. It does everything recursively by default and with a minimum amount of complaining.
+Simple file management for PHP. When you're looking for simple syntax to do complex things. The methods do everything recursively by default and with a minimum amount of complaining.
 
 ## Methods
 
