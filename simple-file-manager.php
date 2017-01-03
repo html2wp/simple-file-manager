@@ -102,7 +102,7 @@ class Sfm {
 	 * @param  string $source The path of the file or folder
 	 * @return bool   Returns TRUE on success or if file already deleted or FALSE on failure.
 	 **/
-	public static function delete( $source ) {
+	public static function rm( $source ) {
 
 		if ( ! file_exists( $source ) ) {
 			return true;
