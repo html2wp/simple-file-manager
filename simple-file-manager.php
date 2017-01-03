@@ -4,7 +4,7 @@ class Sfm {
 
 	/**
 	* Creates a zip file from a file or a folder recursively (without a full nested folder structure inside the zip file).
-	* Based on: http://stackoverflow.com/a/1334949/3073849
+	* @see    http://stackoverflow.com/a/1334949/3073849
 	* @param  string $source      The path of the folder you want to zip
 	* @param  string $destination The path of the zip file you want to create
 	* @return bool   Returns TRUE on success or FALSE on failure.
@@ -98,7 +98,7 @@ class Sfm {
 
 	/**
 	 * Delete a file, or recursively delete a folder and it's contents
-	 * Based on: http://stackoverflow.com/a/15111679/3073849
+	 * @see    http://stackoverflow.com/a/15111679/3073849
 	 * @param  string $source The path of the file or folder
 	 * @return bool   Returns TRUE on success or if file already deleted or FALSE on failure.
 	 **/
@@ -140,7 +140,7 @@ class Sfm {
 
 	/**
 	 * Copy a file, or recursively copy a folder and its contents
-	 * Based on: http://stackoverflow.com/a/12763962/3073849
+	 * @see    http://stackoverflow.com/a/12763962/3073849
 	 * @param  string $source      Source path
 	 * @param  string $destination Destination path
 	 * @param  array  $excludes    (Optional) An array containing the names of files and folders to exclude from copying as strings
