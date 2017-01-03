@@ -165,6 +165,7 @@ class Sfm {
 
 		// Loop through the folder
 		$dir = dir( $source );
+
 		while ( false !== $entry = $dir->read() ) {
 
 			// Skip pointers
