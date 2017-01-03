@@ -50,7 +50,8 @@ class Sfm {
 	}
 
 	/**
-	 * Extracts a zip file to a given folder. If optional overwrite is true, then the method deletes an existing destination folder and replaces it with the contents of the zip file.
+	 * Extracts a zip file to a given folder. If optional overwrite is true, then the method deletes
+	 * an existing destination folder and replaces it with the contents of the zip file.
 	 * @param  string $source      The path of the zip file you want to extract
 	 * @param  string $destination The path of the folder you want to extract to
 	 * @param  bool   $overwrite   (Optional) Whether to overwrite an existing destination folder
@@ -99,34 +100,34 @@ class Sfm {
 	/**
 	 * Delete a file, or recursively delete a folder and it's contents
 	 * @see    http://stackoverflow.com/a/15111679/3073849
-	 * @param  string $source The path of the file or folder
+	 * @param  string $path The path of the file or folder
 	 * @return bool   Returns TRUE on success or if file already deleted or FALSE on failure.
 	 **/
-	public static function rm( $source ) {
+	public static function rm( $path ) {
 
-		if ( ! file_exists( $source ) ) {
+		if ( ! file_exists( $path ) ) {
 			return true;
 		}
 
-		if ( is_dir( $source ) ) {
+		if ( is_dir( $path ) ) {
 
 			foreach ( new RecursiveIteratorIterator(
-				new RecursiveDirectoryIterator( $source, FilesystemIterator::SKIP_DOTS ),
-				RecursiveIteratorIterator::CHILD_FIRST ) as $path ) {
+				new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS ),
+				RecursiveIteratorIterator::CHILD_FIRST ) as $child_path ) {
 
-				if ( $path->isDir() && ! $path->isLink() ) {
-					rmdir( $path->getPathname() );
+				if ( $child_path->isDir() && ! $child_path->isLink() ) {
+					rmdir( $child_path->getPathname() );
 				}
 				else {
-					unlink( $path->getPathname() );
+					unlink( $child_path->getPathname() );
 				}
 			}
 
-			return rmdir( $source );
+			return rmdir( $path );
 		}
 
 		else {
-			return unlink( $source );
+			return unlink( $path );
 		}
 
 	}
