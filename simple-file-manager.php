@@ -132,6 +132,13 @@ class Sfm {
 	}
 
 	/**
+	 * Alias for self:rm
+	 */
+	public static function delete( $source ) {
+		return self:rm( $source );
+	}
+
+	/**
 	 * Copy a file, or recursively copy a folder and its contents
 	 * Based on: http://stackoverflow.com/a/12763962/3073849
 	 * @param  string $source      Source path
