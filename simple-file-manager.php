@@ -1,6 +1,6 @@
 <?php
 
-class sfm {
+class Sfm {
 
 	/**
 	* Creates a zip file from a file or a folder recursively (without a full nested folder structure inside the zip file).
