@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Simple File Manager
+ */
+
 class Sfm {
 
 	/**
@@ -187,12 +191,12 @@ class Sfm {
 		}
 
 		// Loop through the folder
+		// TODO: use recursive iterators
 		$dir = dir( $source );
 
 		while ( false !== $entry = $dir->read() ) {
 
 			// Skip pointers
-			// TODO: use recursive iterators
 			if ( '.' === $entry || '..' === $entry ) {
 				continue;
 			}
