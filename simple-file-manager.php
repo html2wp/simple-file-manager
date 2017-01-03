@@ -33,16 +33,13 @@ class Sfm {
 				$path = realpath( $path );
 
 				if ( is_dir( $path ) ) {
-					$zip->addEmptyDir( str_replace( $source . '/', '', $path . '/' ) );
-				}
-
-				elseif ( is_file( $path ) ) {
-					$zip->addFile( $path, str_replace( $source . '/', '', $path ) );
+					$zip->addEmptyDir( str_replace( "$source/", '', "$path/" ) );
+				} elseif ( is_file( $path ) ) {
+					$zip->addFile( $path, str_replace( "$source/", '', $path ) );
 				}
 			}
-		}
 
-		elseif ( is_file( $source ) ) {
+		} elseif ( is_file( $source ) ) {
 			$zip->addFile( $source, basename( $source ) );
 		}
 
@@ -74,11 +71,10 @@ class Sfm {
 			if ( ! self::mkdir( $destination ) ) {
 				return false;
 			}
-		}
 
-		elseif ( $overwrite ) {
+		} elseif ( $overwrite ) {
 
-			self::delete( $destination );
+			self::rm( $destination );
 
 			if ( ! self::mkdir( $destination ) ) {
 				return false;
@@ -91,7 +87,7 @@ class Sfm {
 		$resource_fork = $destination . '/__MACOSX/';
 
 		if ( file_exists( $resource_fork ) ) {
-			self::delete( $resource_fork );
+			self::rm( $resource_fork );
 		}
 
 		return $zip->close();
@@ -117,16 +113,14 @@ class Sfm {
 
 				if ( $child_path->isDir() && ! $child_path->isLink() ) {
 					rmdir( $child_path->getPathname() );
-				}
-				else {
+				} else {
 					unlink( $child_path->getPathname() );
 				}
 			}
 
 			return rmdir( $path );
-		}
 
-		else {
+		} else {
 			return unlink( $path );
 		}
 
