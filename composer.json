@@ -1,13 +1,14 @@
 {
     "name": "html2wp/simple-file-manager",
     "description": "Simple file management for PHP",
+    "version": "1.1.0",
     "license": "GPL-2.0+",
-    "homepage": "http://htmltowordpress.io",
+    "homepage": "https://htmltowordpress.io",
     "authors": [
         {
             "name": "Harri Heljala",
             "email": "harri@htmltowordpress.io",
-            "homepage": "http://helja.la",
+            "homepage": "https://helja.la",
             "role": "Developer"
         }
     ],
